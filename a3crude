@@ -1,0 +1,889 @@
+#include <stdio.h>
+#include <string.h>
+
+// Estrutura para Tipo de Curso
+struct TipoCurso {
+    int codigoTipoCurso;
+    char nome[50];
+    char turno[10];
+};
+
+// Estrutura para Aluno
+struct Aluno {
+    int matricula;
+    char cpf[15];
+    char nome[50];
+    char sexo;
+    char email[50];
+    int codigoTipoCurso;
+};
+
+// Estrutura para Disciplina
+struct Disciplina {
+    int codigoDisciplina;
+    int codigoTipoCurso;
+    char nome[50];
+    char nomeProfessor[50];
+};
+
+// Estrutura para InscricaoDisciplina
+struct InscricaoDisciplina {
+    int matricula;
+    int codigoDisciplina;
+    char dataInscricao[20];
+};
+
+// Definição dos arrays para armazenar os Tipos de Curso, Alunos, Disciplinas e InscricoesDisciplinas
+struct TipoCurso tiposCursos[100];
+struct Aluno alunos[100];
+struct Disciplina disciplinas[100];
+struct InscricaoDisciplina inscricoesDisciplinas[100];
+
+// Contadores para manter o controle do número de registros
+int numTiposCursos = 0;
+int numAlunos = 0;
+int numDisciplinas = 0;
+int numInscricoesDisciplinas = 0;
+
+// Protótipo da função para verificar se um código de Tipo de Curso existe
+int codigoTipoCursoExiste(int codigo);
+
+// Protótipo da função para verificar se a matrícula do aluno existe
+int matriculaExiste(int matricula);
+
+// Função para verificar se a matrícula do aluno existe
+int matriculaExiste(int matricula) {
+    for (int i = 0; i < numAlunos; i++) {
+        if (alunos[i].matricula == matricula) {
+            return 1; // Matrícula encontrada
+        }
+    }
+    return 0; // Matrícula não encontrada
+}
+
+// Protótipos das funções CRUD para Tipo de Curso
+void criarTipoCurso();
+void listarTiposCursos();
+void lerTipoCurso();
+void atualizarTipoCurso();
+void excluirTipoCurso();
+
+// Protótipos das funções CRUD para Aluno
+void criarAluno();
+void listarAlunos();
+void lerAluno();
+void atualizarAluno();
+void excluirAluno();
+
+// Protótipos das funções CRUD para Disciplina
+void criarDisciplina();
+void listarDisciplinas();
+void lerDisciplina();
+void atualizarDisciplina();
+void excluirDisciplina();
+
+// Protótipos das funções CRUD para Inscriçao Disciplina
+void criarInscricaoDisciplina();
+void listarInscricoesDisciplinas();
+void lerInscricaoDisciplina();
+void atualizarInscricaoDisciplina();
+void excluirInscricaoDisciplina();
+
+// Função principal
+int main() {
+    int opcao;
+
+    while (1) {
+        printf("\nEscolha uma opção:\n");
+        printf("1. Menu Cursos\n");
+        printf("2. Menu Alunos\n");
+        printf("3. Menu Disciplinas\n");
+        printf("4. Menu Inscrição em Disciplina\n");
+        printf("5. Sair\n");
+        printf("\nOpção: ");
+        scanf("%d", &opcao);
+
+        switch (opcao) {
+            case 1:
+                while (1) {
+                    printf("\nMenu de Cursos:\n");
+                    printf("1. Criar um Curso\n");
+                    printf("2. Listar os Cursos cadastrados\n");
+                    printf("3. Ler um Curso\n");
+                    printf("4. Atualizar um Curso\n");
+                    printf("5. Excluir um Curso\n");
+                    printf("6. Voltar ao Menu Principal\n");
+                    printf("\nOpção: ");
+                    scanf("%d", &opcao);
+
+                    switch (opcao) {
+                case 1:
+                    criarTipoCurso();
+                    break;
+                case 2:
+                    listarTiposCursos();
+                    break;
+                case 3:
+                    lerTipoCurso();
+                    break;
+                case 4:
+                    atualizarTipoCurso();
+                    break;
+                case 5:
+                    excluirTipoCurso();
+                    break;
+                case 6:
+                    break; // Voltar ao Menu Principal
+                
+                default:
+                    printf("\nOpção inválida. Tente novamente.\n");
+}
+
+                    if (opcao == 6) {
+                        break;
+                    }
+                }
+                break;
+
+            case 2:
+                while (1) {
+                    printf("\nMenu Aluno:\n");
+                    printf("1. Criar Aluno\n");
+                    printf("2. Listar Alunos\n");
+                    printf("3. Ler Aluno\n");
+                    printf("4. Atualizar Aluno\n");
+                    printf("5. Excluir um Aluno\n");
+                    printf("6. Voltar ao Menu Principal\n");
+                    printf("\nOpção: ");
+                    scanf("%d", &opcao);
+
+                    switch (opcao) {
+                        case 1:
+                            criarAluno();
+                            break;
+                        case 2:
+                            listarAlunos();
+                            break;
+                        case 3:
+                            lerAluno();
+                            break;
+                        case 4:
+                            atualizarAluno();
+                            break;
+                        case 5:
+                            excluirAluno();
+                            break;
+                        case 6:
+                            break; //Volta ao menu principal
+                        default:
+                            printf("\nOpção inválida. Tente novamente.\n");
+                    }
+
+                    if (opcao == 6) {
+                        break;
+                    }
+                }
+                break;
+
+            case 3:
+                while (1) {
+                    printf("\nMenu Disciplina:\n");
+                    printf("1. Criar Disciplina\n");
+                    printf("2. Listar Disciplinas cadastradas\n");
+                    printf("3. Ler uma Disciplina\n");
+                    printf("4. Atualizar uma Disciplina\n");
+                    printf("5. Excluir uma Disciplina\n");
+                    printf("6. Voltar ao Menu Principal\n");
+                    printf("\nOpção: ");
+                    scanf("%d", &opcao);
+
+                    switch (opcao) {
+                        case 1:
+                            criarDisciplina();
+                            break;
+                        case 2:
+                            listarDisciplinas();
+                            break;
+                        case 3:
+                            lerDisciplina();
+                            break;
+                        case 4:
+                            atualizarDisciplina();
+                            break;
+                        case 5:
+                            excluirDisciplina();
+                            break;
+                        case 6:
+                            break; //volta ao menu principal
+                            
+                        default:
+                            printf("\nOpção inválida. Tente novamente.\n");
+                    }
+
+                    if (opcao == 6) {
+                        break;
+                    }
+                }
+                break;
+
+            case 4:
+                while (1) {
+                    printf("\nMenu Inscrição em Disciplina:\n");
+                    printf("1. Cadastrar um Aluno em uma Disciplina\n");
+                    printf("2. Listar Inscrição de Disciplinas cadastradas\n");
+                    printf("3. Ler uma Inscrição de Disciplina\n");
+                    printf("4. Atualizar uma Inscrição de Disciplina\n");
+                    printf("5. Excluir uma Inscrição de Disciplina\n");
+                    printf("6. Voltar ao Menu Principal\n");
+                    printf("\nOpção: ");
+                    scanf("%d", &opcao);
+
+                    switch (opcao) {
+                        case 1:
+                            criarInscricaoDisciplina();
+                            break;
+                        case 2:
+                            listarInscricoesDisciplinas();
+                            break;
+                        case 3:
+                            lerInscricaoDisciplina();
+                            break;
+                        case 4:
+                            atualizarInscricaoDisciplina();
+                            break;
+                        case 5:
+                            excluirInscricaoDisciplina();
+                            break;
+                        case 6:
+                            break; //volta ao menu Principal
+                            
+                        default:
+                            printf("\nOpção inválida. Tente novamente.\n");
+                    }
+
+                    if (opcao == 6) {
+                        break;
+                    }
+                }
+                break;
+
+            case 5:
+                return 0;
+
+            default:
+                printf("\nOpção inválida. Tente novamente.\n");
+        }
+    }
+
+    return 0;
+}
+
+// Implementação das funções CRUD para Tipo de Curso
+void criarTipoCurso() {
+    if (numTiposCursos < 100) {
+        struct TipoCurso novoTipoCurso;
+        int codigo;
+
+        printf("\nDigite o código do Curso: ");
+        scanf("%d", &codigo);
+
+        // Validar se o código já existe
+        for (int i = 0; i < numTiposCursos; i++) {
+            if (tiposCursos[i].codigoTipoCurso == codigo) {
+                printf("\nCódigo do Curso já existe. Tente novamente.\n");
+                return; // Retorna sem criar um novo Tipo de Curso
+            }
+        }
+
+        novoTipoCurso.codigoTipoCurso = codigo;
+
+        // Limpar o buffer de entrada para evitar problemas com a função fgets
+        while (getchar() != '\n');
+
+        printf("Digite o nome do Curso: ");
+        fgets(novoTipoCurso.nome, sizeof(novoTipoCurso.nome), stdin);
+        novoTipoCurso.nome[strcspn(novoTipoCurso.nome, "\n")] = '\0'; // Remover a quebra de linha
+
+        printf("Digite o turno do Curso (manhã ou noite): ");
+        fgets(novoTipoCurso.turno, sizeof(novoTipoCurso.turno), stdin);
+        novoTipoCurso.turno[strcspn(novoTipoCurso.turno, "\n")] = '\0'; // Remover a quebra de linha
+
+        tiposCursos[numTiposCursos++] = novoTipoCurso;
+        printf("\nCurso criado com sucesso!\n\n");
+    } else {
+        printf("\nLimite de Tipos de Curso atingido.\n");
+    }
+}
+
+void listarTiposCursos() {
+    printf("\nLista de Cursos cadastrados:\n");
+    for (int i = 0; i < numTiposCursos; i++) {
+        printf("Código do Curso: %d, Nome: %s, Turno: %s\n", tiposCursos[i].codigoTipoCurso, tiposCursos[i].nome, tiposCursos[i].turno);
+    }
+    printf("\n");
+}
+
+void lerTipoCurso() {
+    int codigo;
+    printf("\nDigite o código do Curso que deseja ler: ");
+    scanf("%d", &codigo);
+
+    for (int i = 0; i < numTiposCursos; i++) {
+        if (tiposCursos[i].codigoTipoCurso == codigo) {
+            printf("\nCurso encontrado:\n");
+            printf("Código do Curso: %d, Nome: %s, Turno: %s\n", tiposCursos[i].codigoTipoCurso, tiposCursos[i].nome, tiposCursos[i].turno);
+            return;
+        }
+    }
+
+    printf("\nCurso com código %d não encontrado.\n", codigo);
+}
+
+void atualizarTipoCurso() {
+    int codigo;
+    printf("\nDigite o código do Curso que deseja atualizar: ");
+    scanf("%d", &codigo);
+
+    for (int i = 0; i < numTiposCursos; i++) {
+        if (tiposCursos[i].codigoTipoCurso == codigo) {
+            printf("Digite o novo nome do Curso: ");
+            while (getchar() != '\n'); // Limpar o buffer
+            fgets(tiposCursos[i].nome, sizeof(tiposCursos[i].nome), stdin);
+            tiposCursos[i].nome[strcspn(tiposCursos[i].nome, "\n")] = '\0'; // Remover a quebra de linha
+
+            printf("Digite o novo turno do Curso (manhã ou noite): ");
+            fgets(tiposCursos[i].turno, sizeof(tiposCursos[i].turno), stdin);
+            tiposCursos[i].turno[strcspn(tiposCursos[i].turno, "\n")] = '\0'; // Remover a quebra de linha
+
+            printf("\nTipo de Curso atualizado com sucesso!\n");
+            return;
+        }
+    }
+
+    printf("\nTipo de Curso com código %d não encontrado.\n", codigo);
+}
+
+// Função para excluir um Tipo de Curso
+void excluirTipoCurso() {
+    int codigo;
+
+    printf("\nDigite o código do Tipo de Curso que deseja excluir: ");
+    scanf("%d", &codigo);
+
+    for (int i = 0; i < numTiposCursos; i++) {
+        if (tiposCursos[i].codigoTipoCurso == codigo) {
+            // Deslocar todos os elementos à frente do elemento encontrado para trás
+            for (int j = i; j < numTiposCursos - 1; j++) {
+                tiposCursos[j] = tiposCursos[j + 1];
+            }
+
+            numTiposCursos--; // Reduzir o número total de tipos de cursos
+            printf("\nTipo de Curso excluído com sucesso!\n");
+            return;
+        }
+    }
+
+    printf("\nTipo de Curso com código %d não encontrado.\n", codigo);
+}
+
+// Função para criar um novo Aluno
+void criarAluno() {
+    // Implementação da função para criar um novo Aluno
+    if (numAlunos < 100) {
+        struct Aluno novoAluno;
+        int matricula, codigoTipoCurso;
+
+        printf("\nDigite a matrícula do Aluno: ");
+        scanf("%d", &matricula);
+
+        // Verificar se a matrícula já existe
+        for (int i = 0; i < numAlunos; i++) {
+            if (alunos[i].matricula == matricula) {
+                printf("\nMatrícula já existe. Tente novamente.\n");
+                return; // Retorna sem criar um novo aluno
+            }
+        }
+
+        novoAluno.matricula = matricula;
+
+        // Limpar o buffer de entrada para evitar problemas com a função fgets
+        while (getchar() != '\n');
+
+        printf("Digite o CPF do Aluno: ");
+        fgets(novoAluno.cpf, sizeof(novoAluno.cpf), stdin);
+        novoAluno.cpf[strcspn(novoAluno.cpf, "\n")] = '\0'; // Remover a quebra de linha
+
+        printf("Digite o nome do Aluno: ");
+        fgets(novoAluno.nome, sizeof(novoAluno.nome), stdin);
+        novoAluno.nome[strcspn(novoAluno.nome, "\n")] = '\0'; // Remover a quebra de linha
+
+        printf("Digite o sexo do Aluno (M/F): ");
+        scanf(" %c", &novoAluno.sexo);
+
+        while (getchar() != '\n'); // Limpar o buffer
+
+        printf("Digite o email do Aluno: ");
+        fgets(novoAluno.email, sizeof(novoAluno.email), stdin);
+        novoAluno.email[strcspn(novoAluno.email, "\n")] = '\0'; // Remover a quebra de linha
+
+        printf("Digite o código do Tipo de Curso do Aluno: ");
+        scanf("%d", &codigoTipoCurso);
+
+        // Verificar se o código do Tipo de Curso existe
+        int tipoCursoEncontrado = 0;
+        for (int i = 0; i < numTiposCursos; i++) {
+            if (tiposCursos[i].codigoTipoCurso == codigoTipoCurso) {
+                tipoCursoEncontrado = 1;
+                break;
+            }
+        }
+
+        if (!tipoCursoEncontrado) {
+            printf("\nCódigo de Tipo de Curso não encontrado. Tente novamente.\n");
+            return; // Retorna sem criar um novo aluno
+        }
+
+        novoAluno.codigoTipoCurso = codigoTipoCurso;
+
+        alunos[numAlunos++] = novoAluno;
+        printf("\nAluno criado com sucesso!\n\n");
+    } else {
+        printf("\nLimite de Alunos atingido.\n");
+    }
+}
+
+void listarAlunos() {
+    // Implementação da função
+    printf("\nLista de Alunos:\n");
+    for (int i = 0; i < numAlunos; i++) {
+        printf("Matrícula: %d\n", alunos[i].matricula);
+        printf("CPF: %s\n", alunos[i].cpf);
+        printf("Nome: %s\n", alunos[i].nome);
+        printf("Sexo: %c\n", alunos[i].sexo);
+        printf("Email: %s\n", alunos[i].email);
+
+        // Encontrar o nome do Tipo de Curso com base no código
+        char nomeTipoCurso[50];
+        for (int j = 0; j < numTiposCursos; j++) {
+            if (alunos[i].codigoTipoCurso == tiposCursos[j].codigoTipoCurso) {
+                strcpy(nomeTipoCurso, tiposCursos[j].nome);
+                break;
+            }
+        }
+
+        printf("Nome do Curso: %s\n", nomeTipoCurso);
+
+        printf("\n");
+    }
+}
+
+void lerAluno() {
+    // Implementação da função
+    int matricula;
+    printf("\nDigite a matrícula do Aluno que deseja ler: ");
+    scanf("%d", &matricula);
+
+    int alunoEncontrado = 0;
+    for (int i = 0; i < numAlunos; i++) {
+        if (alunos[i].matricula == matricula) {
+            printf("Aluno encontrado:\n");
+            printf("Matrícula: %d\n", alunos[i].matricula);
+            printf("CPF: %s\n", alunos[i].cpf);
+            printf("Nome: %s\n", alunos[i].nome);
+            printf("Sexo: %c\n", alunos[i].sexo);
+            printf("Email: %s\n", alunos[i].email);
+
+            // Encontrar o nome do Tipo de Curso com base no código
+            char nomeTipoCurso[50];
+            for (int j = 0; j < numTiposCursos; j++) {
+                if (alunos[i].codigoTipoCurso == tiposCursos[j].codigoTipoCurso) {
+                    strcpy(nomeTipoCurso, tiposCursos[j].nome);
+                    break;
+                }
+            }
+
+            printf("\nNome do Curso: %s\n", nomeTipoCurso);
+
+            alunoEncontrado = 1;
+            break;
+        }
+    }
+
+    if (!alunoEncontrado) {
+        printf("\nAluno com matrícula %d não encontrado.\n", matricula);
+    }
+}
+
+// Protótipo da função para verificar se um código de Tipo de Curso existe
+int codigoTipoCursoExiste(int codigo);
+
+// Função para verificar se um código de Tipo de Curso existe
+int codigoTipoCursoExiste(int codigo) {
+    for (int i = 0; i < numTiposCursos; i++) {
+        if (tiposCursos[i].codigoTipoCurso == codigo) {
+            return 1; // Código de Tipo de Curso existe
+        }
+    }
+    return 0; // Código de Tipo de Curso não existe
+}
+
+void atualizarAluno() {
+    // Implementação da função
+     int matricula;
+    printf("\nDigite a matrícula do Aluno que deseja atualizar: ");
+    scanf("%d", &matricula);
+
+    int alunoEncontrado = 0;
+    for (int i = 0; i < numAlunos; i++) {
+        if (alunos[i].matricula == matricula) {
+            printf("Digite o novo CPF do Aluno: ");
+            while (getchar() != '\n'); // Limpar o buffer
+            fgets(alunos[i].cpf, sizeof(alunos[i].cpf), stdin);
+            alunos[i].cpf[strcspn(alunos[i].cpf, "\n")] = '\0'; // Remover a quebra de linha
+
+            printf("Digite o novo nome do Aluno: ");
+            fgets(alunos[i].nome, sizeof(alunos[i].nome), stdin);
+            alunos[i].nome[strcspn(alunos[i].nome, "\n")] = '\0'; // Remover a quebra de linha
+
+            printf("Digite o novo sexo do Aluno (M/F): ");
+            scanf(" %c", &alunos[i].sexo);
+
+            while (getchar() != '\n'); // Limpar o buffer
+
+            printf("Digite o novo email do Aluno: ");
+            fgets(alunos[i].email, sizeof(alunos[i].email), stdin);
+            alunos[i].email[strcspn(alunos[i].email, "\n")] = '\0'; // Remover a quebra de linha
+
+            int novoCodigoTipoCurso;
+            printf("Digite o novo código do Tipo de Curso do Aluno: ");
+            scanf("%d", &novoCodigoTipoCurso);
+
+            // Verificar se o código do Tipo de Curso existe
+            if (!codigoTipoCursoExiste(novoCodigoTipoCurso)) {
+                printf("\nCódigo de Tipo de Curso não encontrado. As informações do Aluno não foram atualizadas.\n");
+                return;
+            }
+
+            alunos[i].codigoTipoCurso = novoCodigoTipoCurso;
+
+            printf("\nInformações do Aluno atualizadas com sucesso!\n");
+            alunoEncontrado = 1;
+            break;
+        }
+    }
+
+    if (!alunoEncontrado) {
+        printf("\nAluno com matrícula %d não encontrado. As informações não foram atualizadas.\n", matricula);
+    }
+}
+
+// Função para excluir um Aluno
+void excluirAluno() {
+    int matricula;
+
+    printf("\nDigite a matrícula do Aluno que deseja excluir: ");
+    scanf("%d", &matricula);
+
+    for (int i = 0; i < numAlunos; i++) {
+        if (alunos[i].matricula == matricula) {
+            // Deslocar todos os elementos à frente do elemento encontrado para trás
+            for (int j = i; j < numAlunos - 1; j++) {
+                alunos[j] = alunos[j + 1];
+            }
+
+            numAlunos--; // Reduzir o número total de alunos
+            printf("\nAluno excluído com sucesso!\n");
+            return;
+        }
+    }
+
+    printf("\nAluno com matrícula %d não encontrado.\n", matricula);
+}
+
+// Função para verificar se um código de Disciplina existe
+int codigoDisciplinaExiste(int codigo) {
+    for (int i = 0; i < numDisciplinas; i++) {
+        if (disciplinas[i].codigoDisciplina == codigo) {
+            return 1; // Código de Disciplina existe
+        }
+    }
+    return 0; // Código de Disciplina não existe
+}
+
+// Função para criar uma nova Disciplina
+void criarDisciplina() {
+    if (numDisciplinas < 100) {
+        struct Disciplina novaDisciplina;
+        int codigo;
+
+        printf("\nDigite o código da Disciplina: ");
+        scanf("%d", &codigo);
+
+        if (codigoDisciplinaExiste(codigo)) {
+            printf("\nCódigo de disciplina já existe. Tente novamente.\n");
+            return; // Retorna sem criar uma nova Disciplina
+        }
+
+        novaDisciplina.codigoDisciplina = codigo;
+
+        printf("Digite o código do Tipo de Curso da Disciplina: ");
+        scanf("%d", &novaDisciplina.codigoTipoCurso);
+
+        // Verificar se o código do Tipo de Curso existe
+        if (!codigoTipoCursoExiste(novaDisciplina.codigoTipoCurso)) {
+            printf("\nCódigo de Tipo de Curso não encontrado. A Disciplina não foi criada.\n");
+            return;
+        }
+
+        // Limpar o buffer de entrada para evitar problemas com a função fgets
+        while (getchar() != '\n');
+
+        printf("\nDigite o nome da Disciplina: ");
+        fgets(novaDisciplina.nome, sizeof(novaDisciplina.nome), stdin);
+        novaDisciplina.nome[strcspn(novaDisciplina.nome, "\n")] = '\0'; // Remover a quebra de linha
+
+        printf("Digite o nome do Professor da Disciplina: ");
+        fgets(novaDisciplina.nomeProfessor, sizeof(novaDisciplina.nomeProfessor), stdin);
+        novaDisciplina.nomeProfessor[strcspn(novaDisciplina.nomeProfessor, "\n")] = '\0'; // Remover a quebra de linha
+
+        disciplinas[numDisciplinas++] = novaDisciplina;
+        printf("\nDisciplina criada com sucesso!\n\n");
+    } else {
+        printf("\nLimite de Disciplinas atingido.\n");
+    }
+}
+
+// Função para listar todas as Disciplinas
+void listarDisciplinas() {
+    printf("\nLista de Disciplinas:\n");
+    for (int i = 0; i < numDisciplinas; i++) {
+        printf("Código da Disciplina: %d, Código Tipo de Curso: %d, Nome: %s, Professor: %s\n",
+               disciplinas[i].codigoDisciplina, disciplinas[i].codigoTipoCurso,
+               disciplinas[i].nome, disciplinas[i].nomeProfessor);
+    }
+    printf("\n");
+}
+
+// Função para ler informações de uma Disciplina pelo código
+void lerDisciplina() {
+    int codigo;
+    printf("\nDigite o código da Disciplina que deseja ler: ");
+    scanf("%d", &codigo);
+
+    for (int i = 0; i < numDisciplinas; i++) {
+        if (disciplinas[i].codigoDisciplina == codigo) {
+            printf("Disciplina encontrada:\n");
+            printf("Código da Disciplina: %d, Código Tipo de Curso: %d, Nome: %s, Professor: %s\n",
+                   disciplinas[i].codigoDisciplina, disciplinas[i].codigoTipoCurso,
+                   disciplinas[i].nome, disciplinas[i].nomeProfessor);
+            return;
+        }
+    }
+
+    printf("\nDisciplina com código %d não encontrada.\n", codigo);
+}
+
+// Função para atualizar informações de uma Disciplina pelo código
+void atualizarDisciplina() {
+    int codigo;
+    printf("\nDigite o código da Disciplina que deseja atualizar: ");
+    scanf("%d", &codigo);
+
+    for (int i = 0; i < numDisciplinas; i++) {
+        if (disciplinas[i].codigoDisciplina == codigo) {
+            int novoCodigoTipoCurso;
+            printf("Digite o novo código do Tipo de Curso da Disciplina: ");
+            scanf("%d", &novoCodigoTipoCurso);
+
+            // Verificar se o novo código do Tipo de Curso existe
+            if (!codigoTipoCursoExiste(novoCodigoTipoCurso)) {
+                printf("\nCódigo de Tipo de Curso não encontrado. A Disciplina não foi atualizada.\n");
+                return;
+            }
+
+            disciplinas[i].codigoTipoCurso = novoCodigoTipoCurso;
+
+            // Limpar o buffer de entrada para evitar problemas com a função fgets
+            while (getchar() != '\n');
+
+            printf("Digite o novo nome da Disciplina: ");
+            fgets(disciplinas[i].nome, sizeof(disciplinas[i].nome), stdin);
+            disciplinas[i].nome[strcspn(disciplinas[i].nome, "\n")] = '\0'; // Remover a quebra de linha
+
+            printf("Digite o novo nome do Professor da Disciplina: ");
+            fgets(disciplinas[i].nomeProfessor, sizeof(disciplinas[i].nomeProfessor), stdin);
+            disciplinas[i].nomeProfessor[strcspn(disciplinas[i].nomeProfessor, "\n")] = '\0'; // Remover a quebra de linha
+
+            printf("\nDisciplina atualizada com sucesso!\n");
+            return;
+        }
+    }
+
+    printf("\nDisciplina com código %d não encontrada.\n", codigo);
+}
+
+// Função para excluir uma Disciplina
+void excluirDisciplina() {
+    int codigo;
+
+    printf("Digite o código da Disciplina que deseja excluir: ");
+    scanf("%d", &codigo);
+
+    for (int i = 0; i < numDisciplinas; i++) {
+        if (disciplinas[i].codigoDisciplina == codigo) {
+            // Deslocar todos os elementos à frente do elemento encontrado para trás
+            for (int j = i; j < numDisciplinas - 1; j++) {
+                disciplinas[j] = disciplinas[j + 1];
+            }
+
+            numDisciplinas--; // Reduzir o número total de disciplinas
+            printf("\nDisciplina excluída com sucesso!\n");
+            return;
+        }
+    }
+
+    printf("\nDisciplina com código %d não encontrada.\n", codigo);
+}
+
+// Função para criar uma nova InscricaoDisciplina
+void criarInscricaoDisciplina() {
+    if (numInscricoesDisciplinas < 100) {
+        struct InscricaoDisciplina novaInscricaoDisciplina;
+        int matricula, codigoDisciplina;
+
+        printf("\nDigite a matrícula do Aluno: ");
+        scanf("%d", &matricula);
+
+        // Verificar se a matrícula do aluno existe
+        if (!matriculaExiste(matricula)) {
+            printf("\nMatrícula do aluno não encontrada. A inscrição não foi realizada.\n");
+            return;
+        }
+
+        printf("Digite o código da Disciplina: ");
+        scanf("%d", &codigoDisciplina);
+
+        // Verificar se o código da disciplina existe
+        if (!codigoDisciplinaExiste(codigoDisciplina)) {
+            printf("\nCódigo da Disciplina não encontrado. A inscrição não foi realizada.\n");
+            return;
+        }
+
+        novaInscricaoDisciplina.matricula = matricula;
+        novaInscricaoDisciplina.codigoDisciplina = codigoDisciplina;
+
+        // Limpar o buffer de entrada para evitar problemas com a função fgets
+        while (getchar() != '\n');
+
+        printf("Digite a data da inscrição (DD/MM/AAAA): ");
+        fgets(novaInscricaoDisciplina.dataInscricao, sizeof(novaInscricaoDisciplina.dataInscricao), stdin);
+        novaInscricaoDisciplina.dataInscricao[strcspn(novaInscricaoDisciplina.dataInscricao, "\n")] = '\0'; // Remover a quebra de linha
+
+        inscricoesDisciplinas[numInscricoesDisciplinas++] = novaInscricaoDisciplina;
+        printf("\nInscrição em Disciplina realizada com sucesso!\n\n");
+    } else {
+        printf("\nLimite de inscrições em disciplinas atingido.\n");
+    }
+}
+
+// Função para listar todas as InscricoesDisciplina
+void listarInscricoesDisciplinas() {
+    if (numInscricoesDisciplinas == 0) {
+        printf("\nNenhuma inscrição de disciplina encontrada.\n");
+    } else {
+        printf("\nLista de Inscrições de Disciplina:\n");
+        for (int i = 0; i < numInscricoesDisciplinas; i++) {
+            printf("Matrícula: %d, Código da Disciplina: %d, Data de Inscrição: %s\n",
+                   inscricoesDisciplinas[i].matricula,
+                   inscricoesDisciplinas[i].codigoDisciplina,
+                   inscricoesDisciplinas[i].dataInscricao);
+        }
+    }
+    printf("\n");
+}
+
+// Função para ler uma InscricaoDisciplina pelo código
+void lerInscricaoDisciplina() {
+    int matricula, codigoDisciplina;
+
+    printf("\nDigite a matrícula do Aluno: ");
+    scanf("%d", &matricula);
+
+    printf("Digite o código da Disciplina: ");
+    scanf("%d", &codigoDisciplina);
+
+    for (int i = 0; i < numInscricoesDisciplinas; i++) {
+        if (inscricoesDisciplinas[i].matricula == matricula &&
+            inscricoesDisciplinas[i].codigoDisciplina == codigoDisciplina) {
+            printf("Inscrição de Disciplina encontrada:\n");
+            printf("Matrícula: %d, Código da Disciplina: %d, Data de Inscrição: %s\n",
+                   inscricoesDisciplinas[i].matricula,
+                   inscricoesDisciplinas[i].codigoDisciplina,
+                   inscricoesDisciplinas[i].dataInscricao);
+            return;
+        }
+    }
+
+    printf("\nInscrição de Disciplina não encontrada.\n");
+}
+
+// Função para atualizar uma InscricaoDisciplina
+void atualizarInscricaoDisciplina() {
+    int matricula, codigoDisciplina;
+    char novaData[20];
+
+    printf("\nDigite a matrícula do Aluno: ");
+    scanf("%d", &matricula);
+
+    // Verificar se a matrícula existe
+    if (!matriculaExiste(matricula)) {
+        printf("\nMatrícula não encontrada. A inscrição não pode ser atualizada.\n");
+        return;
+    }
+
+    printf("Digite o código da Disciplina: ");
+    scanf("%d", &codigoDisciplina);
+
+    for (int i = 0; i < numInscricoesDisciplinas; i++) {
+        if (inscricoesDisciplinas[i].matricula == matricula &&
+            inscricoesDisciplinas[i].codigoDisciplina == codigoDisciplina) {
+
+            printf("Digite a nova data de inscrição (DD/MM/AAAA): ");
+            scanf("%s", novaData);
+
+            // Atualizar a data de inscrição
+            strcpy(inscricoesDisciplinas[i].dataInscricao, novaData);
+
+            printf("\nInscrição de Disciplina atualizada com sucesso!\n");
+            return;
+        }
+    }
+
+    printf("\nInscrição de Disciplina não encontrada.\n");
+}
+
+// Função para excluir uma Inscrição em Disciplina
+void excluirInscricaoDisciplina() {
+    int matricula;
+
+    printf("\nDigite a matrícula do Aluno que deseja excluir a Inscrição: ");
+    scanf("%d", &matricula);
+
+    for (int i = 0; i < numInscricoesDisciplinas; i++) {
+        if (inscricoesDisciplinas[i].matricula == matricula) {
+            // Deslocar todos os elementos à frente do elemento encontrado para trás
+            for (int j = i; j < numInscricoesDisciplinas - 1; j++) {
+                inscricoesDisciplinas[j] = inscricoesDisciplinas[j + 1];
+            }
+
+            numInscricoesDisciplinas--; // Reduzir o número total de inscrições em disciplinas
+            printf("\nInscrição em Disciplina excluída com sucesso!\n");
+            return;
+        }
+    }
+
+    printf("\nInscrição em Disciplina com matrícula %d não encontrada.\n", matricula);
+}
+
+
+
